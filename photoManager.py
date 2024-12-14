@@ -1,4 +1,5 @@
 import os
+import piexif
 from PIL import Image
 from PIL.ExifTags import TAGS
 from datetime import datetime
@@ -34,3 +35,26 @@ def photoGetDate(filePath):
     except Exception as e:
         print(f"Error getting modification date for {filePath}: {e}")
         return None
+
+
+def editImageDate(filePath, newDate):
+    """
+    Changes DateTimeOriginal EXIF field of an image. 
+
+    :param filePath: str - Path to image
+    :param newDate: - datetime - New date
+    """
+
+    img = Image.open(filePath)
+
+    exifDict = piexif.load(img.info.get("exif", b""))
+
+    newExifDateStr = newDate.strftime("%Y:%m:%d %H:%M:%S")
+    newDateBytes = newExifDateStr.encode('utf-8')
+
+    exifDict['0th'][piexif.ImageIFD.DateTime] = newDateBytes
+    exifDict['Exif'][piexif.ExifIFD.DateTimeOriginal] = newDateBytes
+    exifDict['Exif'][piexif.ExifIFD.DateTimeDigitized] = newDateBytes
+    
+    exifBytes = piexif.dump(exifDict)
+    img.save(filePath, exif=exifBytes)

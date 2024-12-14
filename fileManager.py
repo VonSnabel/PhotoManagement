@@ -20,6 +20,7 @@ def populateUserDisplayFolder(User, minPhotos=300):
             if photo["path"] not in currentPhotos:
                 shutil.copy(photo["path"], displayFolder)
                 currentPhotos.add(photo["path"])
+                print(f"Photo added from priority")
 
 
     photoBank = []
