@@ -1,4 +1,3 @@
-import os
 import json
 
 #Logic order
@@ -7,7 +6,7 @@ import json
 #Fill with random from priority list.
 
 class User:
-    def __init__(self, name, dumpFolder, displayFolder, interestMap, groups=None):
+    def __init__(self, name, dumpFolder, displayFolder, groups=None):
         """
         Initialize a User object.
 
@@ -21,7 +20,7 @@ class User:
         self.groups = groups
         self.displayFolder = displayFolder
         self.dumpFolder = dumpFolder
-        self.priorityInterest = interestMap
+        #self.priorityInterest = interestMap
 
     def _generateGroupFolders(self):
         """
@@ -54,19 +53,16 @@ class User:
         return group_name in self.groups
 
 
-
-class  Group:
-    def __init__(self, name, members, folders):
-        self.name = name
-        self.members = members
-        self.folders = folders
-    
-
-
-
-
-
-
-
-
-        
+def loadUsersFromJson(jsonPath):
+    with open(jsonPath, 'r') as file:
+        data=json.load(file)
+    users = []
+    for userData in data["users"]:
+        user = User(
+            name=userData["name"],
+            groups=userData["groups"],
+            displayFolder=userData["displayFolder"],
+            dumpFolder=userData["dumpFolder"]
+        )
+        users.append(user)
+    return users
