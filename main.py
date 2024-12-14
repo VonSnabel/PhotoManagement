@@ -24,9 +24,13 @@ def main():
             group.addMember(userDict[member])
         group.getRelevantFolders()
 
+    groupDict["Vernersson"].updateCache()
+    groupDict["Mattsson"].updateCache()
 
-    fm.cleanUserDisplayFolder(userDict["Daniel"])
-    fm.populateUserDisplayFolder(userDict["Daniel"], 40)
+
+    print( groupDict["Mattsson"].getCache())
+    #fm.cleanUserDisplayFolder(userDict["Daniel"])
+    #fm.populateUserDisplayFolder(userDict["Daniel"], 5)
 
 
     return
