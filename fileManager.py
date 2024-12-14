@@ -8,40 +8,58 @@ import json
 
 class User:
     def __init__(self, name, dumpFolder, displayFolder, interestMap, groups=None):
+        """
+        Initialize a User object.
+
+        :param name: str - The name of the user
+        :param group: list - The groups this user belongs to.
+        :param displayFolder: str - The display folder for the user.
+        :param dumpFolders: list - The image dump locations.
+        :param priorityInterest: map - The weight for other users.
+        """
         self.name = name
-        self.dumpFolder = dumpFolder
-        self.displayFolder = displayFolder
-        self.priorityInterest = interestMap
         self.groups = groups
-        self.nbrGroups = len(groups)
+        self.displayFolder = displayFolder
+        self.dumpFolder = dumpFolder
+        self.priorityInterest = interestMap
+
+    def _generateGroupFolders(self):
+        """
+        Note: Quite sure I need to redo this a bit since each user has their own folder. 
+
+        Generates folder paths for each group the user belongs to.
+
+        :return: dict - Dictionary mapping group names to folder paths. 
+
+        """
+        return {group: f"{self.base_folder}/{group}" for group in self.groups}
 
 
-    def addGroup(self, group):
-        if group not in self.groups:
-            self.groups.append(group)
+    def get_group_folder(self, group_name):
+        """
+        Get the folder path for a specific group.
 
-    def movePhotos(self):
-        for group in self.groups:
-            print()
+        :param group_name: str - The name of the group.
+        :return: str or None - Folder path if the group exists, otherwise None.
+        """
+        return self.group_folders.get(group_name)
 
-    def moveNewImages(self):
-        #For each map of members check new photos. 
-        #Take count and then check 
+    def belongs_to_group(self, group_name):
+        """
+        Check if the user belongs to a specific group.
 
-    def movePhotosBasedOnMembership(self):
-        for group in self.user.groups:
-            if group in self.user.priorityInterest:
-                print()
-            else:
-                print()
-
+        :param group_name: str - The name of the group to check.
+        :return: bool - True if the user is in the group, False otherwise.
+        """
+        return group_name in self.groups
 
 
 
 class  Group:
-    def __init__(self, name, members):
+    def __init__(self, name, members, folders):
         self.name = name
         self.members = members
+        self.folders = folders
     
 
 
