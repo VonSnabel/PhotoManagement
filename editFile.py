@@ -9,4 +9,4 @@ newDate = datetime(2002, 12, 22, 18, 42) # Replace with the desired date
 pm.editImageDate(filePath, newDate)
 
 
-print(pm.photoGetDate(filePath))
+print(pm.photoGetDate(filePath)) 

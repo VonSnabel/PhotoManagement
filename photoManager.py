@@ -44,17 +44,20 @@ def editImageDate(filePath, newDate):
     :param filePath: str - Path to image
     :param newDate: - datetime - New date
     """
-
-    img = Image.open(filePath)
-
-    exifDict = piexif.load(img.info.get("exif", b""))
-
-    newExifDateStr = newDate.strftime("%Y:%m:%d %H:%M:%S")
-    newDateBytes = newExifDateStr.encode('utf-8')
-
-    exifDict['0th'][piexif.ImageIFD.DateTime] = newDateBytes
-    exifDict['Exif'][piexif.ExifIFD.DateTimeOriginal] = newDateBytes
-    exifDict['Exif'][piexif.ExifIFD.DateTimeDigitized] = newDateBytes
+    try:
     
-    exifBytes = piexif.dump(exifDict)
-    img.save(filePath, exif=exifBytes)
+        img = Image.open(filePath)
+
+        exifDict = piexif.load(img.info.get("exif", b""))
+
+        newExifDateStr = newDate.strftime("%Y:%m:%d %H:%M:%S")
+        newDateBytes = newExifDateStr.encode('utf-8')
+
+        exifDict['0th'][piexif.ImageIFD.DateTime] = newDateBytes
+        exifDict['Exif'][piexif.ExifIFD.DateTimeOriginal] = newDateBytes
+        exifDict['Exif'][piexif.ExifIFD.DateTimeDigitized] = newDateBytes
+    
+        exifBytes = piexif.dump(exifDict)
+        img.save(filePath, exif=exifBytes)   
+    except Exception as e:
+        print(f"Error updating EXIF data for {filePath}: {e}")
