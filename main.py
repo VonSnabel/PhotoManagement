@@ -2,10 +2,11 @@ import os
 import userManager as um
 import groupManager as gm
 import fileManager as fm
-
+from logger import logger
 
 
 def main():
+    logger.info("Program Started")
     users = um.loadUsersFromJson("/home/main/Documents/PhotoManagement/users.json")
     userDict = {}
     for i in users:
@@ -24,15 +25,19 @@ def main():
             group.addMember(userDict[member])
         group.getRelevantFolders()
 
+    print("Starting Grouping")
     groupDict["Vernersson"].updateCache()
     groupDict["Mattsson"].updateCache()
+    print("Grouping Done")
 
+    
+    for i in users:
+        print("Cleaning User: ", i.name)
+        fm.cleanUserDisplayFolder(userDict[i.name])
+        print("Populating User: ", i.name)
+        fm.populateUserDisplayFolder(userDict[i.name], 5)
 
-    print( groupDict["Mattsson"].getCache())
-    #fm.cleanUserDisplayFolder(userDict["Daniel"])
-    #fm.populateUserDisplayFolder(userDict["Daniel"], 5)
-
-
+    logger.info("Program Finished")
     return
 
 
