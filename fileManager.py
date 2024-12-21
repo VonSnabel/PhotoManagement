@@ -43,7 +43,8 @@ def populateUserDisplayFolder(User, minPhotos=300):
 
 def cleanUserDisplayFolder(User):
     """
-    Deletes all files in the given users displayfolder
+    Deletes all files in the given users displayfolder.
+    Potential improvements. Keep priority Photos
 
     :param User: Object - User Class Object
     """
