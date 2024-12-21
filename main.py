@@ -25,19 +25,19 @@ def main():
             group.addMember(userDict[member])
         group.getRelevantFolders()
 
-    print("Starting Grouping")
+    logger.info("Starting Grouping")
     groupDict["Vernersson"].updateCache()
     groupDict["Mattsson"].updateCache()
-    print("Grouping Done")
+    logger.info("Grouping Done")
 
     
     for i in users:
-        print("Cleaning User: ", i.name)
+        logger.info(f"Cleaning User: {i.name}")
         fm.cleanUserDisplayFolder(userDict[i.name])
-        print("Populating User: ", i.name)
+        logger.info(f"Populating User: {i.name}")
         fm.populateUserDisplayFolder(userDict[i.name], 5)
 
-    logger.info("Program Finished")
+    logger.info("Program Finished\n")
     return
 
 
