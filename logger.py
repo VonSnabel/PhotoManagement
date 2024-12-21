@@ -6,7 +6,7 @@ def setupLogger():
         logger.setLevel(logging.DEBUG)
 
 
-        fileHandler = logging.FileHandler("logfile.txt")
+        fileHandler = logging.FileHandler("../logs/photoLog.txt")
         fileHandler.setLevel(logging.DEBUG)
 
 
