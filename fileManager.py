@@ -1,6 +1,7 @@
 import os
 import random
 import shutil
+from logger import logger
 
 def populateUserDisplayFolder(User, minPhotos=300):
     """
@@ -14,15 +15,15 @@ def populateUserDisplayFolder(User, minPhotos=300):
     displayFolder = User.displayFolder
     os.makedirs(displayFolder, exist_ok=True)
 
+    #Add priority Photos
     currentPhotos = set(os.listdir(displayFolder))
     for group in User.groups:
         for photo in group.cache:
             if photo["path"] not in currentPhotos:
                 shutil.copy(photo["path"], displayFolder)
                 currentPhotos.add(photo["path"])
-                print(f"Photo added from priority")
 
-
+    #initialize fill task
     photoBank = []
     for group in User.groups:
         for folder in group.getRelevantFolders():
@@ -37,7 +38,7 @@ def populateUserDisplayFolder(User, minPhotos=300):
         shutil.copy(photoPath, displayFolder)
         currentPhotos.add(photoPath)
 
-    print(f"Populated display folder for {User.name} with {len(currentPhotos)} photos.")
+    logger.info(f"Populated display folder for {User.name} with {len(currentPhotos)} photos.")
 
 
 
@@ -53,7 +54,7 @@ def cleanUserDisplayFolder(User):
     nbrToBeDeleted = len(os.listdir(User.displayFolder))
 
     if not os.path.exists(User.displayFolder):
-        print(f"Display folder of user {User.name}: {User.displayFolder} does not exist. Nothing to clean.")
+        logger.warning(f"Display folder of user {User.name}: {User.displayFolder} does not exist. Nothing to clean.")
         return
     
     for fileName in os.listdir(User.displayFolder):
@@ -63,9 +64,9 @@ def cleanUserDisplayFolder(User):
                 os.remove(filePath)
                 deleted+=1
         except Exception as e:
-            print(f"Error deleting {filePath}: {e}")
+            logger.warning(f"Error deleting {filePath}: {e}")
 
-    print(f"Clean up has deleted {deleted} out of {nbrToBeDeleted} photos for user {User.name}")
+    logger.info(f"Clean up has deleted {deleted} out of {nbrToBeDeleted} photos for user {User.name}")
 
 
 
